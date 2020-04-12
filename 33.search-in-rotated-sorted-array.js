@@ -45,7 +45,7 @@ var binarySearch = (nums, start_index, end_index, target) => {
     // left, turning point is in the left
     // target is between turning point and end point
     if(middle > end && end > target) return binarySearch(nums, middle_index+1, end_index, target);
-    // right, substain normal binary search
+    // right, susstain normal binary search
     else return binarySearch(nums, start_index, middle_index-1, target);
   }
   else {
