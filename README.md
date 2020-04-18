@@ -118,7 +118,7 @@ There will be only two situation, enough space or not.
 >   - idles will be set between the chars
 
 > Not enough space
->   - after filled in all the spaces, the string grows.
+>   - after fill in all the spaces, the string grows.
 
 
 ### Output Solution - max(step1, Size of Tasks)
