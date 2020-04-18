@@ -90,7 +90,8 @@ As a result, the upper algo seems just fine.
 ```
 tasks = [A,A,A,B,B,C,D,E,F,F], n=2
 max_freq = 2
-other_chars = {B,C,D,E,F}, other_chars_freq = 6 
+other_chars = {B,C,D,E,F}
+other_chars_freq = 6 
 ```
 
 1. Same step above
