@@ -26,7 +26,7 @@ public:
       int intervals = 0;
       int arr_count[26] = {0};
       int max_freq = 0;
-      int most_freq_count = 0;
+      int most_freq_count = 1;
       
       for(const auto &it : tasks) {
         arr_count[it-'A']++;
@@ -34,14 +34,15 @@ public:
           // this kind of char will have to insert between the max freq slot 
           most_freq_count++; 
         }
-        else if(max_freq < arr_count[it-'A']) {
+        if(max_freq < arr_count[it-'A']) {
           max_freq = arr_count[it-'A'];
           most_freq_count = 1;
         }
       }
-
+      
       intervals = (max_freq) * (n+1) - n + (most_freq_count-1);
-      return max(intervals, total_tasks);
+      
+      return intervals > total_tasks ? intervals : total_tasks;
     }
 };
 ```
@@ -58,14 +59,14 @@ Let's start design an simple algo.
 
 1. Build the max freq string 
      
-     - $(maxfreq)*(n+1) → [AiiAiiAii]$ 
+     - $ (maxfreq)*(n+1) → [AiiAiiAii] $ 
   
 2. Cut the redundant tail idle -> at most n idle need cut 
      
-      - $-n → [AiiAiiA]$
+      - $ -n → [AiiAiiA] $
 3. We need to insert other most freq char into tail and previous max freq char(A) 
  
-      - $(mostFreqCount-1) → [ABiABiAB]$
+      - $ (mostFreqCount-1) → [ABiABiAB] $
 
 *** Q. Any blind side above? ***
   
