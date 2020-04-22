@@ -12,8 +12,8 @@ public:
       int buy_idx = 0;
       int sale_idx = 0;
       /**
-        1. better min -> change holding stock, stock_idx = (i,i)
-        2. new stock (old buy value <value < old sale value) -> sale the old one, stock_idx = (i,i)
+        1. better min -> change holding stock, (buy, sale) = (i,i)
+        2. new stock (old buy value <value < old sale value) -> sale the old one, (buy, sale) = (i,i)
         3. larger sale day -> recount the profit
       */
       for(int i=1; i<prices.size(); i++) {
