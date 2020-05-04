@@ -1,8 +1,60 @@
 # LeetCode solutions
 Writing down solution ideas for some interesting questions.
 Search the question ID as (-777-) to find the notes
+# -123- Best Time to Buy and Sell Stock III 
+## Basic Info
+Similar with Problem 122, but **You may complete at most two transactions.***
 
-# -621-
+
+```
+Input: [3,3,5,0,0,3,1,4]
+Output: 6
+Explanation: 
+    Buy on day 4 (price = 0) and sell on day 6 (price = 3), profit = 3-0 = 3.
+    Then buy on day 7 (price = 1) and sell on day 8 (price = 4), profit = 4-1 = 3.
+```
+
+## Solution
+```C++
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+      int trans_limit = 2;
+      vector<pair<int, int>> records = {pair<int, int>(INT_MIN,0), pair<int, int>(INT_MIN,0)};;
+          
+      for(int i=0; i<prices.size(); i++) {
+        // first buy -> buy the min cost, not buy -> continue empty
+        records[0].first = max(-prices[i], records[0].first);
+        // sell -> sell in the max profit, not sell -> continue holding
+        records[0].second = max(records[0].first + prices[i] , records[0].second);
+        
+        for(int t=1; t<trans_limit; t++) {
+          records[t].first = max(records[t-1].second - prices[i], records[t].first);
+          records[t].second = max(records[t].first + prices[i], records[t].second);
+        }
+      }
+      return records[trans_limit-1].second;
+    }
+};
+```
+
+## Thinking Process
+The idea is to storing 2 most highest profit by dp.
+So, every time we picked a new target i, we get the new result by taking comparison with the previous result.
+### First record
+- records[0].first represents our first buying transaction
+  1. consider buying the target stock $i → -price[i]$
+  2. $pass$
+
+- records[1].second represents our first saling transaction
+  1. consider saling the target stock $i$ to be our first transaction $record → records[t].first + prices[i]$
+  2. $pass$
+- Picked the best decision, smaller for buy, larger for sale → using max function for both action
+### Second record
+- same concept above except need to consider the profit from first transaction
+- second buy record → $records[t-1].second - prices[i]$ $or$ $pass$
+
+# -621- Task Scheduler 
 ## Basic Info
 There is a non-negative cooling interval n that means between two same tasks, there must be at least n intervals that CPU are doing different tasks or just be idle.
 
@@ -15,7 +67,7 @@ You need to return the least number of intervals the CPU will take to finish all
 * Try to figure a new algo which only focus on the max freqency char, since idle could be insert,.
 
 ## Solution
-```
+```C++
 class Solution {
 public:
 
