@@ -10,13 +10,15 @@ func climbStairs(n int) int {
 			return n
 	}
 	
-	ways := make([]int, n+1, n+1)
-	ways[1] = 1
-	ways[2] = 2
+	steps := []int{1, 2} // n = 1 & 2
+	current := 0
 	for i:=3; i<=n; i++ {
-			ways[i] = ways[i-1] + ways[i-2]
+			current = steps[0] + steps[1]
+			steps[0] = steps[1]
+			steps[1] = current
+			// dp -> steps[i] = steps[i-1] + steps[i-2]
 	}
-	return ways[n]
+	return current
 }
 // @lc code=end
 
