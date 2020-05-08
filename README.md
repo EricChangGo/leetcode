@@ -1,6 +1,7 @@
 # LeetCode solutions
 Writing down solution ideas for some interesting questions.
 Search the question ID as (-777-) to find the notes
+
 # -123- Best Time to Buy and Sell Stock III 
 ## Basic Info
 Similar with Problem 122, but **You may complete at most two transactions.***
@@ -23,9 +24,7 @@ public:
       vector<pair<int, int>> records = {pair<int, int>(INT_MIN,0), pair<int, int>(INT_MIN,0)};;
           
       for(int i=0; i<prices.size(); i++) {
-        // first buy -> buy the min cost, not buy -> continue empty
         records[0].first = max(-prices[i], records[0].first);
-        // sell -> sell in the max profit, not sell -> continue holding
         records[0].second = max(records[0].first + prices[i] , records[0].second);
         
         for(int t=1; t<trans_limit; t++) {
@@ -39,20 +38,52 @@ public:
 ```
 
 ## Thinking Process
-The idea is to storing 2 most highest profit by dp.
+- The idea is to storing 2 most highest profit by dp.
 So, every time we picked a new target i, we get the new result by taking comparison with the previous result.
+
+- The key part is to control this two records properly. 
 ### First record
-- records[0].first represents our first buying transaction
+- records[0].first represents our latest buying transaction
   1. consider buying the target stock $i → -price[i]$
   2. $pass$
 
-- records[1].second represents our first saling transaction
+- records[1].second represents our latest saling transaction
   1. consider saling the target stock $i$ to be our first transaction $record → records[t].first + prices[i]$
   2. $pass$
 - Picked the best decision, smaller for buy, larger for sale → using max function for both action
 ### Second record
-- same concept above except need to consider the profit from first transaction
+- same concept above except need to consider the profit from latest transaction
 - second buy record → $records[t-1].second - prices[i]$ $or$ $pass$
+- if there is no second transaction, this record value will be copy from the first record.
+
+## Example
+```
+Input: [3,3,5,0,0,3,1,4]
+Output: 6
+```
+### Step 1
+
+$record[0] = [3,\widehat{3,5},0,0,3,1,4]$
+
+$record[1] = [3,\widehat{3,5},0,0,3,1,4]$
+
+$profit = 2
+
+### Step 2
+
+record[0] = $[3,3,5,0,\widehat{0,3},1,4]$
+
+record[1] = $[3,\widehat{3,5},0,0,3,1,4]$
+
+$profit = 5
+
+### Step 3
+
+record[0] = $[3,3,5,0,\widehat{0,3,1,4}]$
+
+record[1] = $[3,\widehat{3,5},0,0,3,1,4]$
+
+$profit = 6
 
 # -621- Task Scheduler 
 ## Basic Info
