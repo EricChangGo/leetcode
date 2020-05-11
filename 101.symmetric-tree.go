@@ -19,7 +19,8 @@
 
     2. Target on (3,3), next will be check (O,O) (X,X)
         
-    3. Then we give a recursive formula, that after we compare (a, b) = (left, right) nodes, we recursively check (a->left, b->right) && (a->right, b->left)
+		3. Then we give a recursive formula. 
+		After we compare (a, b) = (left, right) nodes, we recursively check (a->left, b->right) && (a->right, b->left)
 
  */
 
