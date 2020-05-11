@@ -19,9 +19,8 @@
 
     2. Target on (3,3), next will be check (O,O) (X,X)
         
-    3. Then we give a recursive formula, that after we compare (a, b) nodes, we recursively check (a->left, b->right) && (a->right, b->left)
-    
-    4. level 0 root also fit's the check flow
+    3. Then we give a recursive formula, that after we compare (a, b) = (left, right) nodes, we recursively check (a->left, b->right) && (a->right, b->left)
+
  */
 
  func compare(a *TreeNode, b *TreeNode) bool {
@@ -32,6 +31,7 @@
 	return compare(a.Left, b.Right)&&compare(a.Right,b.Left)
 }
 func isSymmetric(root *TreeNode) bool {
-	return compare(root, root)
+	if root == nil {return true}
+	return compare(root.Left, root.Right)
 }
 
