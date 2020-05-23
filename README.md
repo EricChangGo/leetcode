@@ -2,6 +2,141 @@
 Writing down solution ideas for some interesting questions.
 Search the question ID as (-777-) to find the notes
 
+# -53- maximum-subarray
+There will be two method to solve this problem - Iterative and Divide&conquer
+
+## Iterative
+First we provide a iterative way to solve this problem.
+```GO
+func max(a,b int) int {
+	if b > a {
+		return b
+	}
+	return a
+}
+
+func maxSubArray(nums []int) int {
+	MaxInt:= (1 << 31)-1
+    MinInt:= -MaxInt-1
+    
+	temp:=0
+    maxValue:=MinInt
+    for i:=0; i<len(nums); i++ {
+        if temp < 0 {
+            temp = 0
+        }
+        temp+=nums[i]
+        maxValue=max(maxValue, temp)
+    }
+    return maxValue
+}
+```
+### ***Thinking process***
+Here is a given input. Let's see how the code works.
+```
+Input: [-2,1,-3,4,-1,2,1,-5,4],
+Output: 6
+Explanation: [4,-1,2,1] has the largest sum = 6.
+```
+
+- First, a naive thought is to add the numbers.
+  - Pick the temparary total value (temp_sum) as sum, if it is better the choice
+
+```Go
+maxValue=max(maxValue, temp)
+```
+
+- Second, if a temparary total value is negative
+  - It will be a great idea to forgive the temp sub string. In other words, this sub string is not a good choice, because it will turn down your value.
+
+### ***Key steps***
+1. sub-string = [-2, 1, -3], temp = 1+(-3) → temp = 0 **(drop)**
+2. sub-string = [4] **(good choice)**  → maxValue = 4
+3. sub-string = [4, -1, __, __ ...], maxValue = 4
+4. In step 3, depends on the further sub __, __ ...
+    - If the sub will turn down then the temp will never replace the maxValue.
+    - Or else, might get larger temp in order to replace maxValue.
+
+## Divide&conquer
+```Go
+const MaxInt = (1 << 31) - 1
+const MinInt = -MaxInt - 1
+
+func max(a,b int) int {
+	if b > a {
+		return b
+	}
+	return a
+}
+
+func getLeftMax(num []int, start int, end int) int {
+	temp:=0
+	maxValue:=MinInt
+	for i:=end; i>=start; i-- {
+		temp+=num[i]
+		maxValue=max(maxValue, temp)
+	}
+	return maxValue
+}
+
+func getRightMax(num []int, start int, end int) int {
+	temp:=0
+	maxValue:=MinInt
+	for i:=start; i<=end; i++ {
+		temp+=num[i]
+		maxValue=max(maxValue, temp)
+	}
+	return maxValue
+}
+
+func maxSubArray(nums []int) int {
+	return getMaxSubs(nums, 0, len(nums)-1)
+}
+
+func getMaxSubs(nums []int, start int, end int) int {
+	if start == end {
+		return nums[start]
+	}
+	mid := (start+end)/2
+	leftSub := getMaxSubs(nums, start,  mid)
+	rightSub := getMaxSubs(nums, mid+1, end)
+
+	leftMax := getLeftMax(nums, start, mid)
+	rightMax := getRightMax(nums, mid+1, end)
+	total := leftMax + rightMax
+	return max(max(leftSub, rightSub), total)
+}
+```
+
+### ***Thinking process***
+
+The idea is to divide the array into two half (left, right) and try to pick the maxValue in each division method recursively.
+
+The main flow is to start at the middle for the initial sub string, then decide to extended or repicked a better result in right or left.
+
+Given the same input down below.
+```
+Input: [-2,1,-3,4,-1,2,1,-5,4],
+Output: 6
+Explanation: [4,-1,2,1] has the largest sum = 6.
+```
+
+1. First picked the -1 in the middle, and seperate the array to [-2,1,-3,4,-1] and [2,1,-5,4].
+2. Target the former one [-2,1,-3,4, 1], then we try to focus on a smaller divsions - left [-2,1] and right [4,-1]
+
+3. Right maxValue will be $max(4, 4+(-1)) = 4$, how about the left value?
+
+***Most tricky part*** - decide the value of the right.
+4. Left value will be $max(1, 1+(-2))$. The direction adding each value should be right to left. In this direction, we are able to extend the middle substring.
+    - If we go left to right, $max(-2, 1+(-2))$ will be a total incorrect value for extending middle substring.
+    - If we picked the wrong way, we will miss the value by merging middle value with left value.
+
+5. Merge or keep searching? 
+    - Merge: $total = left maxValue + right maxValue$  
+    - Keep searching by recursive left right sub string
+
+6. Choose the max result $return max(max(leftSub, rightSub), total)$
+
 # -123- Best Time to Buy and Sell Stock III 
 ## Basic Info
 Similar with Problem 122, but **You may complete at most two transactions.***
