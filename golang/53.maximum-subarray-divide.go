@@ -5,6 +5,9 @@
  */
 
 // @lc code=start
+const MaxInt = (1 << 31) - 1
+const MinInt = -MaxInt - 1
+
 func max(a,b int) int {
 	if b > a {
 		return b
@@ -13,21 +16,21 @@ func max(a,b int) int {
 }
 
 func getLeftMax(num []int, start int, end int) int {
-	sum:=0
-	maxValue:=-2199999
+	temp:=0
+	maxValue:=MinInt
 	for i:=end; i>=start; i-- {
-		sum+=num[i]
-		maxValue=max(maxValue, sum)
+		temp+=num[i]
+		maxValue=max(maxValue, temp)
 	}
 	return maxValue
 }
 
 func getRightMax(num []int, start int, end int) int {
-	sum:=0
-	maxValue:=-2199999
+	temp:=0
+	maxValue:=MinInt
 	for i:=start; i<=end; i++ {
-		sum+=num[i]
-		maxValue=max(maxValue, sum)
+		temp+=num[i]
+		maxValue=max(maxValue, temp)
 	}
 	return maxValue
 }
@@ -36,24 +39,19 @@ func maxSubArray(nums []int) int {
 	return getMaxSubs(nums, 0, len(nums)-1)
 }
 
-/**
-	[-2, 1] -> 1
-	[4, -1, 2] -> 4,-1,2
-	Q. adding negative number or not?
-*/
 func getMaxSubs(nums []int, start int, end int) int {
 	if start == end {
 		return nums[start]
 	}
 	// divide the array into half
 	mid := (start+end)/2
-	left_sub := getMaxSubs(nums, start,  mid)
-	right_sub := getMaxSubs(nums, mid+1, end)
+	leftSub := getMaxSubs(nums, start,  mid)
+	rightSub := getMaxSubs(nums, mid+1, end)
 
-	left_max := getLeftMax(nums, start, mid)
-	right_max := getRightMax(nums, mid+1, end)
-	total := left_max + right_max
-	return max(max(left_sub, right_sub), total)
+	leftMax := getLeftMax(nums, start, mid)
+	rightMax := getRightMax(nums, mid+1, end)
+	total := leftMax + rightMax
+	return max(max(leftSub, rightSub), total)
 }
 // @lc code=end
 

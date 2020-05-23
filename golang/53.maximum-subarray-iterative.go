@@ -5,26 +5,27 @@
  */
 
 // @lc code=start
-func maxSubArray(nums []int) int {
-	/*
-		O(N) Solution
-	*/
-	MaxInt:= (1 << 31)-1
-	sum:= -MaxInt-1
-	temp_sum:= 0
-	
-	for i:=0; i<len(nums); i++ {
-		if temp_sum < 0 {
-			// drop previous numbers
-			temp_sum = 0
-		}
-		temp_sum += nums[i]
-		if temp_sum > sum {
-			// get better result
-			sum = temp_sum
-		}
+func max(a,b int) int {
+	if b > a {
+		return b
 	}
-	return sum
+	return a
+}
+
+func maxSubArray(nums []int) int {
+	MaxInt:= (1 << 31)-1
+	MinInt:= -MaxInt-1
+
+	temp:=0
+    maxValue:=MinInt
+    for i:=0; i<len(nums); i++ {
+        if temp < 0 {
+            temp = 0
+        }
+        temp+=nums[i]
+        maxValue=max(maxValue, temp)
+    }
+    return maxValue
 }
 // @lc code=end
 
