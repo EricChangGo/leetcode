@@ -43,7 +43,6 @@ func getMaxSubs(nums []int, start int, end int) int {
 	if start == end {
 		return nums[start]
 	}
-	// divide the array into half
 	mid := (start+end)/2
 	leftSub := getMaxSubs(nums, start,  mid)
 	rightSub := getMaxSubs(nums, mid+1, end)
