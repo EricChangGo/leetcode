@@ -1,35 +1,13 @@
-/*
- * @lc app=leetcode id=136 lang=golang
- *
- * [136] Single Number
- */
-
-// @lc code=start
-// Goal: Implement it without using extra memory
-
+/**
+*	Goal: Implement it without using extra memory
+*	The key is to use bitwise XOR ^ operator, which gains Commutative Property.
+*	[2,3,1,2,3]
+*   - 2^3^1^2^3 = 2^2^3^3^1
+**/
 func singleNumber(nums []int) int {
-	var res int
-	var noFound bool
-	for i := 0; i < len(nums); i++ {
-		if nums[i] == -1 {
-			continue
-		}
-		res = nums[i]
-		noFound = true
-		for j := i + 1; j < len(nums); j++ {
-			if nums[i] == nums[j] {
-				nums[i] = -1
-				nums[j] = -1
-				noFound = false
-				break
-			}
-		}
-
-		if noFound {
-			return res
-		}
+	res := nums[0]
+	for i := 1; i < len(nums); i++ {
+		res ^= nums[i]
 	}
-	return -1
+	return res
 }
-
-// @lc code=end
