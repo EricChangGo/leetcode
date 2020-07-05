@@ -13,6 +13,8 @@
     1. no cycle -> the fast runner will reach the end point first
     2. cycle -> the fast runner will be n steps behind the second, and get close a step closer evertime -> eventually reach to the slow runner
 */
+
+/** Using floyd algorithm */
 func hasCycle(head *ListNode) bool {
     has_cycle := false
     if head == nil || head.Next == nil {
